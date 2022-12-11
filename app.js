@@ -16,5 +16,8 @@ app.use("/user-register", registerUserRouter);
 const loginUserRouter = require("./routes/user_login");
 app.use("/user-login", loginUserRouter);
 
+const productsListRouter = require("./routes/products_list");
+app.use("/products-list", productsListRouter);
+
 
 module.exports = app;
