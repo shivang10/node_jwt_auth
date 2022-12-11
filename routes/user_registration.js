@@ -18,19 +18,15 @@ router.route("/").post(async (req, res) => {
     const password = await bcrypt.hash(plainTextPassword, saltRounds);
     try {
         const userResponse = await User.create({
-            username,
-            password,
-            email
+            username, password, email
         });
 
         return res.status(200).send({
-            message: "Account is successfully created",
-            response: userResponse,
+            message: "Account is successfully created", response: userResponse,
         })
     } catch (err) {
         return res.status(400).send({
-            message: "error came up",
-            response: err
+            message: "error came up", response: err
         })
     }
 

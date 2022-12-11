@@ -18,28 +18,20 @@ router.post("/", async (req, res) => {
         const isUserValid = await User.findOne({email}, {username: 1, password: 1, email: 1});
         const isPasswordCorrect = await bcrypt.compare(password, isUserValid["password"]);
         if (isPasswordCorrect) {
-            const token = jwt.sign(
-                {id: isUserValid._id, username: isUserValid.username},
-                JWT_SECRET,
-                {
-                    expiresIn: "7d"
-                }
-            );
+            const token = jwt.sign({id: isUserValid._id, username: isUserValid.username}, JWT_SECRET, {
+                expiresIn: "7d"
+            });
             return res.status(200).send({
-                message: "Successfully logged in",
-                data: token,
-                status: 200
+                message: "Successfully logged in", data: token, status: 200
             });
         } else {
             return res.status(400).send({
-                message: "Wrong username or password. Try Again",
-                status: 400
+                message: "Wrong username or password. Try Again", status: 400
             });
         }
     } catch (err) {
         return res.status(400).send({
-            message: "Wrong username or password. Try Again",
-            status: 400
+            message: "Wrong username or password. Try Again", status: 400
         });
     }
 });
