@@ -8,11 +8,11 @@ router.route("/").post(async (req, res) => {
     const {username, password: plainTextPassword, email} = req.body;
 
     if (!email || !plainTextPassword || !username) {
-        return res.status(200).send("Email,password and username, all fields are required.");
+        return res.status(400).send("Email,password and username, all fields are required.");
     }
 
     if (!emailValidator.validate(email)) {
-        return res.status(200).send("Incorrect email.")
+        return res.status(400).send("Incorrect email.")
     }
 
     const password = await bcrypt.hash(plainTextPassword, saltRounds);
@@ -26,7 +26,7 @@ router.route("/").post(async (req, res) => {
         })
     } catch (err) {
         return res.status(400).send({
-            message: "error came up", response: err
+            message: "Some error came up", response: err
         })
     }
 
