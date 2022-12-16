@@ -11,7 +11,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 router.post("/", async (req, res) => {
     const {email, password} = req.body;
     if (!email || !password) {
-        return res.status(200).send("Email and password both are required.");
+        return res.status(400).send("Email and password both are required.");
     }
 
     try {
