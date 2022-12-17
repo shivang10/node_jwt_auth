@@ -6,7 +6,16 @@ const saltRounds = 10;
 const bcrypt = require("bcryptjs");
 
 
-beforeAll(async () => await dbHandler.connect());
+beforeAll(async () => {
+    await dbHandler.connect()
+
+    const password = await bcrypt.hash("password", saltRounds);
+    const user = new User({
+        "email": "test@email.com", "password": password, "username": "username"
+    });
+
+    await user.save();
+});
 
 afterEach(async () => await dbHandler.clearDatabase());
 
@@ -15,13 +24,6 @@ afterAll(async () => await dbHandler.closeDatabase());
 
 describe("User Login", () => {
     it("should successfully login user", async () => {
-        const password = await bcrypt.hash("password", saltRounds);
-        const user = new User({
-            "email": "test@email.com", "password": password, "username": "username"
-        });
-
-        await user.save();
-
         const userData = {
             "email": "test@email.com", "password": "password", "username": "username"
         }
@@ -33,13 +35,6 @@ describe("User Login", () => {
     });
 
     it("should give error for wrong username", async () => {
-        const password = await bcrypt.hash("password", saltRounds);
-        const user = new User({
-            "email": "test@email.com", "password": password, "username": "username"
-        });
-
-        await user.save();
-
         const userData = {
             "email": "testing@email.com", "password": "password", "username": "username"
         }
@@ -51,13 +46,6 @@ describe("User Login", () => {
     });
 
     it("should give error for wrong password", async () => {
-        const password = await bcrypt.hash("password", saltRounds);
-        const user = new User({
-            "email": "test@email.com", "password": password, "username": "username"
-        });
-
-        await user.save();
-
         const userData = {
             "email": "test@email.com", "password": "passwords", "username": "username"
         }
