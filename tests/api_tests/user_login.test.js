@@ -1,4 +1,4 @@
-const dbHandler = require('./db_setup');
+const dbHandler = require('../db_tests/db_setup');
 const app = require("../../app");
 const request = require("supertest");
 const User = require("../../models/user");
@@ -62,8 +62,9 @@ describe("User Login", () => {
         }
 
         const res = await request(app).post("/user-login").send(userData);
+        const resData = JSON.parse(res["text"]);
         expect(res.status).toEqual(400);
-        expect(res.text).toEqual("Email and password both are required.");
+        expect(resData.message).toEqual("Email and password both are required.");
     });
 
     it("password missing, should give an error", async () => {
@@ -72,7 +73,8 @@ describe("User Login", () => {
         }
 
         const res = await request(app).post("/user-login").send(userData);
+        const resData = JSON.parse(res["text"]);
         expect(res.status).toEqual(400);
-        expect(res.text).toEqual("Email and password both are required.");
+        expect(resData.message).toEqual("Email and password both are required.");
     });
 });

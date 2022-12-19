@@ -2,20 +2,15 @@ const express = require("express");
 const router = express.Router();
 const Products = require("../models/product");
 const validateToken = require("../middlewares/validate_token");
+const api_response = require("../utils/api_response");
 
 router.get("/", validateToken, async (req, res) => {
     try {
         const productsList = await Products.find({}, {title: 1, price: 1});
-
-        return res.status(200).send({
-            message: "Products fetched successfully", response: productsList
-        })
-
+        return res.status(200).send(api_response("Products fetched successfully", productsList))
     } catch (err) {
-        return res.status(400).send({
-            message: "Could not fetch products", response: err
-        })
+        return res.status(400).send(api_response("Could not fetch products", err))
     }
-})
+});
 
 module.exports = router;

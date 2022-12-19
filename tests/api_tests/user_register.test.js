@@ -1,4 +1,4 @@
-const dbHandler = require('./db_setup');
+const dbHandler = require('../db_tests/db_setup');
 const app = require("../../app");
 const request = require("supertest");
 
@@ -27,8 +27,9 @@ describe("User registration", () => {
         }
 
         const res = await request(app).post("/user-register").send(userData);
+        const resData = JSON.parse(res["text"])
         expect(res.status).toEqual(400);
-        expect(res.text).toEqual("Email,password and username, all fields are required.");
+        expect(resData.message).toEqual("Email,password and username, all fields are required.");
     });
 
     it("password missing, should give an error", async () => {
@@ -37,8 +38,9 @@ describe("User registration", () => {
         }
 
         const res = await request(app).post("/user-register").send(userData);
+        const resData = JSON.parse(res["text"])
         expect(res.status).toEqual(400);
-        expect(res.text).toEqual("Email,password and username, all fields are required.");
+        expect(resData.message).toEqual("Email,password and username, all fields are required.");
     });
 
     it("username missing, should give an error", async () => {
@@ -47,8 +49,9 @@ describe("User registration", () => {
         }
 
         const res = await request(app).post("/user-register").send(userData);
+        const resData = JSON.parse(res["text"])
         expect(res.status).toEqual(400);
-        expect(res.text).toEqual("Email,password and username, all fields are required.");
+        expect(resData.message).toEqual("Email,password and username, all fields are required.");
     });
 
     it("invalid email, should give an error", async () => {
@@ -57,7 +60,8 @@ describe("User registration", () => {
         }
 
         const res = await request(app).post("/user-register").send(userData);
+        const resData = JSON.parse(res["text"])
         expect(res.status).toEqual(400);
-        expect(res.text).toEqual("Incorrect email.");
+        expect(resData.message).toEqual("Incorrect email.");
     });
 });
